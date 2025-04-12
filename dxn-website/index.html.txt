@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DXN – Better Ways to Live</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>DXN – Better Ways to Live</h1>
+      <p>Découvrez nos produits naturels pour votre bien-être</p>
+    </header>
+
+    <!-- Product Categories -->
+    <section class="product-categories">
+      <div class="category">
+        <h2>🧴 Soins personnels</h2>
+        <p>Hygiène, shampooings, dentifrices naturels et plus.</p>
+        <button class="buy-button" onclick="handlePaypalPayment()">Acheter via PayPal</button>
+      </div>
+      <div class="category">
+        <h2>💄 Cosmétiques & Peau</h2>
+        <p>Produits beauté DXN à base de spiruline et Ganoderma.</p>
+        <button class="buy-button" onclick="handlePaypalPayment()">Acheter via PayPal</button>
+      </div>
+      <div class="category">
+        <h2>🍵 Alimentation & Boissons</h2>
+        <p>Café DXN, spiruline, thé au Ganoderma et autres produits.</p>
+        <button class="buy-button" onclick="handlePaypalPayment()">Acheter via PayPal</button>
+      </div>
+      <div class="category">
+        <h2>🌿 Série Oti DXN</h2>
+        <p>Gamme spécialisée de suppléments naturels DXN.</p>
+        <button class="buy-button" onclick="handlePaypalPayment()">Acheter via PayPal</button>
+      </div>
+    </section>
+
+    <!-- Chat IA -->
+    <section class="chat-section">
+      <h2>🤖 Chat IA - Conseiller DXN</h2>
+      <input type="text" id="question" placeholder="Posez une question sur un produit..." />
+      <button onclick="handleAskAI()">Demander</button>
+      <div id="response"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <h3>Contact</h3>
+      <p>📞 06 52 14 84 93</p>
+      <p>📧 fatima.delice1@gmail.com</p>
+      <p>📍 Taza</p>
+    </footer>
+  </div>
+
+  <script>
+    async function handleAskAI() {
+      const question = document.getElementById('question').value;
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerHTML = "Chargement...";
+
+      try {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer YOUR_OPENAI_API_KEY` // Remplace par ta vraie clé
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: question }],
+            temperature: 0.7
+          })
+        });
+        const data = await res.json();
+        const answer = data.choices?.[0]?.message?.content || "Réponse non disponible.";
+        responseDiv.innerHTML = answer;
+      } catch (err) {
+        responseDiv.innerHTML = "Erreur lors de la connexion à l'IA.";
+      }
+    }
+
+    function handlePaypalPayment() {
+      window.location.href = "https://www.paypal.com/paypalme/fatimaDXN"; // Remplace avec ton lien PayPal réel
+    }
+  </script>
+</body>
+</html>
